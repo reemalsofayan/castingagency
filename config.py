@@ -9,5 +9,5 @@ DEBUG = True
 #database_path = 'postgresql://postgres:root@localhost:5432/castingagency'
 # Connect to the database
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost:5433/castingagency'
+SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:root@localhost:5432/castingagency'
 
