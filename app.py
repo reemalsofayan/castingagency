@@ -10,13 +10,13 @@ from flask_migrate import Migrate
 import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
-from config import Config
+# from config import Config
 from flask import jsonify
 from auth import AuthError, requires_auth
 import os
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object('config')
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
@@ -62,15 +62,15 @@ def add_movie(payload):
 @requires_auth('get:movies')
 def get_movies(payload):
     
-    try:
+    # try:
         movies = Movie.query.all()
         movies = [movie.format() for movie in movies]
         return jsonify({
             'success': True,
             'movies': movies
         })
-    except:
-        abort(422)
+    # except:
+    #     abort(422)
 # this endpint will alow the user to modify an existing movie
 @app.route('/movies/<int:movie_id>', methods=['PATCH'])
 @requires_auth('patch:movies')
