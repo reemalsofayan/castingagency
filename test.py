@@ -3,10 +3,12 @@ import unittest
 import json
 from app import app
 from models import *
+# from config import Config
 
-EXECUTIVE_PRODUCER = ('eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNCRVY2R0c1a2dRWUdsMm5ManVkNSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtY2FzdGluZ2FnZW5jeS5hdS5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTM1NTY4OTQ3ODA3Mzk3MTg4OTYiLCJhdWQiOlsiQ2FzdGluZyIsImh0dHBzOi8vZnNuZC1jYXN0aW5nYWdlbmN5LmF1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE1OTc0MzIwNjIsImV4cCI6MTU5NzUxODQ0OSwiYXpwIjoiN2I0blZtYzg1RGdFMFpTa3cyenl0UUhIeGpBMjNPTWQiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.FwYL6AeIWqRugULKLD1RFUzrp8tkvPupO6runWXjjNLF3_Uss11Aw1E8DSfxZe3IeUrIEBeVmABRIA_a2Xx4s1_OlhZQT3IObYVfZn8q9Qg0GfTXVUboYik-HpiA4YPJnM2iMGIB4sT7TFy8AWkGCYpDCijeuu7PDKN_-jGFowPIHWNlpDbcK-IAK_ww-pMQrQcMu4n0kdOfwFV5-AatS7tROKvr2qnz27qyK7pmUpoM-L-3giv2KMbwjgrPTJAj1oBKxMDpa8g57j60N97jR14UrMmBRUBeJ1wK3h5pNd-9jub1aW7SrYqs0_3UtAdfbchSXVV1d4YjwdCBdU-w9Q')
-CASTING_DIRECTOR = ('eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNCRVY2R0c1a2dRWUdsMm5ManVkNSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtY2FzdGluZ2FnZW5jeS5hdS5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTA2MTIwMTM1OTMyNTQ0MTk2MDkiLCJhdWQiOlsiQ2FzdGluZyIsImh0dHBzOi8vZnNuZC1jYXN0aW5nYWdlbmN5LmF1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE1OTc0MzIzMzMsImV4cCI6MTU5NzUxODcyMCwiYXpwIjoiN2I0blZtYzg1RGdFMFpTa3cyenl0UUhIeGpBMjNPTWQiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOltdfQ.jXL8qXeNeAxg_zOXyRFZ_Z2jqzDizxshMeDZMUNmJHrfsXQRtYtbibrsME7AtKVPrHL6D_HAw4b1Xrw9GHEuxvJhYRj92o7NsaanG-Ji6Ezs6pIpspBH305MkFOGUG4GcUuBwzFQFlGAaFczMLznOQvPbRP9wSYQSNZB8hk8-kILwKq9_gVfBpbqAlB-fhuO3G3dFZQAzw8MFhluZ9wZtaH0MWCytVgTeEcuZ-hkwBzNKJ9g7C76iO2efujfNaMCGRlo5fqnjAPrJSu2i4yNu3qaDjKgk6VmfXP8hy9djPU-1R0Q3G_pR-jX3WEvm5XzbRFdERAJncEI1O-2HUnZWw')
-CASTING_ASSISTANT = ('eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNCRVY2R0c1a2dRWUdsMm5ManVkNSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtY2FzdGluZ2FnZW5jeS5hdS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWYzMmJhMzZmNTM2ZTkwMDM3YWVjOTUyIiwiYXVkIjoiQ2FzdGluZyIsImlhdCI6MTU5NzQzMjQ3MiwiZXhwIjoxNTk3NTE4ODU5LCJhenAiOiI3YjRuVm1jODVEZ0UwWlNrdzJ6eXRRSEh4akEyM09NZCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.wZnTBSg0vWx9VVA2J2OOztADPlrwIKGUH7wdBZTSa9qS5o8EHl7SI2S_mg_KM5WRDrF_x_YqRqaEip6BHJfQOXDy-Qv17xnINPr2d7Zqo7Yud3MbPyhCSFave-RLBZz5hw8GLsH0MDdReGOTFpEFr22symBipkoPNpyWVfC4IQxzXbtSLd1BSaGohvIMerNHDS8tp2HaWuhh7D_cGRpNfMVpmVdoAu9vRNccBz87AHgHpWijHXteSkvPqfP4DPIBJP_SIJ21zxibldBq37oLLyjfWk5PbUPqAYq8azakgfCxPe0WeL1hF8-ACywE_zK11jfyp77mHCrkajZGEjsUvw')
+
+EXECUTIVE_PRODUCER = ('eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNCRVY2R0c1a2dRWUdsMm5ManVkNSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtY2FzdGluZ2FnZW5jeS5hdS5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTM1NTY4OTQ3ODA3Mzk3MTg4OTYiLCJhdWQiOlsiQ2FzdGluZyIsImh0dHBzOi8vZnNuZC1jYXN0aW5nYWdlbmN5LmF1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE1OTc1MTE1MDgsImV4cCI6MTU5NzU5Nzg5NSwiYXpwIjoiN2I0blZtYzg1RGdFMFpTa3cyenl0UUhIeGpBMjNPTWQiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOlsiZGVsZXRlOmFjdG9ycyIsImRlbGV0ZTptb3ZpZXMiLCJnZXQ6YWN0b3JzIiwiZ2V0Om1vdmllcyIsInBhdGNoOmFjdG9ycyIsInBhdGNoOm1vdmllcyIsInBvc3Q6YWN0b3JzIiwicG9zdDptb3ZpZXMiXX0.fQwrTnQX3cRm94oIF9svxVnHFV2x6PID7ALdPU-qZVt0LwM90ZZ4rFU6l83VdJ0h-xOxNC7yC_bo2_yvKxqx9mSgjoHmI5k0QEhhlh-iXu0pjBkMvPdJ-X9pd1thTNCKoO7GmK4s3yF8sc1RtJiWw4uOXbs1jqJsNnDmJmoWuTe5pFdJORtLKkGNqg2rpltMHRR5npfAOhWojfMa1A_WXW0i03kwGOTvuupi5JK-r7PTg_4TbCI6q8KkVcfjHZYzjyMWTIlUINiK1AGq_xSy2h8gxNWVBn1b80bsgRNe2i4chYezVXxcHyLAzjhGgCDYUrvxoPzp-25PyfMMQR5sLA')
+CASTING_DIRECTOR = ('eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNCRVY2R0c1a2dRWUdsMm5ManVkNSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtY2FzdGluZ2FnZW5jeS5hdS5hdXRoMC5jb20vIiwic3ViIjoiZ29vZ2xlLW9hdXRoMnwxMTA2MTIwMTM1OTMyNTQ0MTk2MDkiLCJhdWQiOlsiQ2FzdGluZyIsImh0dHBzOi8vZnNuZC1jYXN0aW5nYWdlbmN5LmF1LmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE1OTc1MTE3MjYsImV4cCI6MTU5NzU5ODExMywiYXpwIjoiN2I0blZtYzg1RGdFMFpTa3cyenl0UUhIeGpBMjNPTWQiLCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwicGVybWlzc2lvbnMiOltdfQ.eMbfqamTqI3kC-wKeV-atkPMBBQfiaKnz9LDmG8J90O9cvTyjsWMZQC2YL81qCYuLf5JS0vd23nZ8XvJGKPWn4SXL_NnYLVgS854f_t84KxQFI8gBIGpNeAOa4aGGwfyDxkxfXoi0OmIajohSz2wigmuTpUkJISjj66R-65sTDGp2-fW4O0knyuY2s1-f2szZHo4xcT7abXIoTJVhq0rWRXKLrZFZq1bRXz7GyJU5BnvX-T0iJ6SYW9W5geXdJ2lWuvsy9q9W_wptDVNo-WeUiSOkJt5O15VR1HtTGqgw0F73HNOtBX-jSMBzpo0tw5ITAvNYgewC9BvhoAU9f8zeA')
+CASTING_ASSISTANT = ('eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IlNCRVY2R0c1a2dRWUdsMm5ManVkNSJ9.eyJpc3MiOiJodHRwczovL2ZzbmQtY2FzdGluZ2FnZW5jeS5hdS5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWYzMmJhMzZmNTM2ZTkwMDM3YWVjOTUyIiwiYXVkIjoiQ2FzdGluZyIsImlhdCI6MTU5NzUxMTg0MSwiZXhwIjoxNTk3NTk4MjI4LCJhenAiOiI3YjRuVm1jODVEZ0UwWlNrdzJ6eXRRSEh4akEyM09NZCIsInNjb3BlIjoiIiwicGVybWlzc2lvbnMiOlsiZ2V0OmFjdG9ycyIsImdldDptb3ZpZXMiXX0.YEQ9E3CKiqaF7JgMMi7rqnl7Yhr9RsYaWgkJexQY3o4AXgLuMhpdbp1ht1UvnrpDZo-uPYIcASgh7ML-rYH33d47lAFCbK9wemLstJoa1VIeyBDA0-oVDVwRw1KPn40e2Zik2mdN7Sb2aa06MeiLXNhvUitJfJHuCLGzJNB5q0A3z9-yDwjFlii2Vee0sdGlt9rJ9szWc87h52kLvGYs6aySHVrZpL737pcMPqc7flNSfdDFH7nYpG0A-8W9AVMN7ju8oROmyw2eXShTrzfajE7GS7D5hKtji36UZC25sfRhQTiadEdev0vqHXaSJJ0r-GIhhSUdTymj_VQct0nNoA')
 
 
 class CastingAgencyTestCase(unittest.TestCase):
@@ -14,43 +16,44 @@ class CastingAgencyTestCase(unittest.TestCase):
     def setUp(self):
         """Define test variables and initialize app."""
         self.app = app.test_client()
+       
 
         self.database_name = "castingagency"
         self.database_path = 'postgresql://postgres:root@localhost:5432/castingagency'
 
         self.new_movie = {
-            "title": "Extractioon 2020",
+            "title": "Extrfea 2020",
             "release_date": "2018"
         }
 
         self.new_movie2 = {
-            "title": "cindrellla",
+            "title": "cindsefrea",
             "release_date": "2008"
         }
 
         self.new_movie3 = {
-            "title": " alldiin",
+            "title": " adiin",
             "release_date": "2010"
         }
 
         self.new_movie4 = {
-            "title": "downtonabby",
+            "title": "downtobby",
             "release_date": "2000"
         }
 
         self.new_movie5 = {
-            "title": "  beautiful mind",
+            "title": "  beautifund",
             "release_date": "2017"
         }
 
         self.new_actor2 = {
-            "name": "toas",
+            "name": "tosknjkfas",
             "age": 44,
             "gender": "male"
         }
 
         self.new_actor = {
-            "name": "the roc",
+            "name": "thesf knjroc",
             "age": 22,
             "gender": "male"
         }

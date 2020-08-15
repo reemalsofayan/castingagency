@@ -10,13 +10,15 @@ from flask_migrate import Migrate
 import logging
 from logging import Formatter, FileHandler
 from flask_wtf import Form
-# from config import Config
+from config import Config
 from flask import jsonify
 from auth import AuthError, requires_auth
 import os
 
+
+
 app = Flask(__name__)
-app.config.from_object('config')
+app.config.from_object(Config)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
