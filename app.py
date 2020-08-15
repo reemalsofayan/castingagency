@@ -4,7 +4,6 @@ import dateutil.parser
 import babel
 from sqlalchemy import func
 from flask import Flask, render_template, request, Response, flash, redirect, url_for, abort
-from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import logging
